@@ -1,6 +1,6 @@
 # Always-On Automation Runtime (Sanitized Demo)
 
-A small, production-style **execution layer** demo: accepts signed webhook events, validates + de-dupes them (idempotency), persists state, and calls a pluggable connector (stub by default).
+A small, production-style **execution layer** demo: accepts authenticated webhook events, validates + de-dupes them (idempotency), persists state, and calls a pluggable connector (stub by default).
 
 ## Quick start (local)
 
@@ -32,4 +32,4 @@ curl -X POST "http://127.0.0.1:8080/webhook" \
 ## Notes
 - State is stored in `state.sqlite` (ignored by git via `.gitignore`).
 - The connector layer is designed to be swapped for real integrations.
-- See `architecture.md` for the architecture overview.
+- See `docs/architecture.md` for the architecture overview.
