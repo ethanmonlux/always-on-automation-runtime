@@ -13,11 +13,11 @@ This demo shows the core reliability patterns used in a continuously running aut
 - Modular connector layer for external API execution  
 - Operator visibility via health + status endpoints  
 
-Most automation demos focus on making something work once. This focuses on making it safe and predictable in **always-on environments** where external systems fail or retry.
+Most automation demos focus on making something work once. This focuses on making it safe and predictable in always-on environments where external systems fail or retry.
 
 This repository is a **sanitized demonstration** of an automation runtime that ingests webhook events, enforces **idempotency** and **guardrails**, executes actions through **modular connectors**, and exposes **operator controls**.
 
-It’s designed to be a reusable backbone for API-driven automation where the hard part isn’t “making it work once” — it’s making it **safe, deterministic, and operable**.
+Itâs designed to be a reusable backbone for API-driven automation where the hard part isnât âmaking it work onceâ â itâs making it **safe, deterministic, and operable**.
 
 ---
 
@@ -38,12 +38,12 @@ A continuously running execution service designed for reliable autonomous workfl
 ## Architecture (high level)
 
 Signal Source  
-→ Webhook ingestion (FastAPI)  
-→ Validation + auth + idempotency  
-→ Persistent state (SQLite in demo)  
-→ Guardrails engine  
-→ Execution layer (pluggable connectors)  
-→ State + operator tooling (`/admin/status`, kill switch)
+â Webhook ingestion (FastAPI)  
+â Validation + auth + idempotency  
+â Persistent state (SQLite in demo)  
+â Guardrails engine  
+â Execution layer (pluggable connectors)  
+â State + operator tooling (`/admin/status`, kill switch)
 
 See `docs/architecture.md` for the full overview.
 
@@ -51,10 +51,10 @@ See `docs/architecture.md` for the full overview.
 
 ## Endpoints (demo)
 
-- `GET /health` — liveness check  
-- `GET /admin/status` — system mode + processed count  
-- `POST /admin/kill_switch?enabled=true|false` — operator kill switch  
-- `POST /webhook` — ingest an event (idempotent + guardrails + execute)
+- `GET /health` â liveness check  
+- `GET /admin/status` â system mode + processed count  
+- `POST /admin/kill_switch?enabled=true|false` â operator kill switch  
+- `POST /webhook` â ingest an event (idempotent + guardrails + execute)
 
 ---
 
@@ -138,7 +138,7 @@ curl http://127.0.0.1:8080/admin/status
 
 ---
 
-## What’s intentionally omitted
+## Whatâs intentionally omitted
 
 To keep this public and safe, this repo excludes:
 - real credentials or account identifiers  
