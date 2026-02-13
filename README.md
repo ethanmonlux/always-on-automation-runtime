@@ -13,7 +13,7 @@ pip install -r requirements.txt
 
 ### 2) Set an API key for the webhook
 ```bash
-export API_KEY="change-me"  # Windows PowerShell: $env:API_KEY="change-me"
+export API_KEY="demo-key"  # Windows PowerShell: $env:API_KEY="demo-key"
 ```
 
 ### 3) Run the server
@@ -25,7 +25,7 @@ uvicorn app.main:app --reload --port 8080
 ```bash
 curl -X POST "http://127.0.0.1:8080/webhook" \
   -H "Content-Type: application/json" \
-  -H "X-API-Key: change-me" \
+  -H "X-API-Key: demo-key" \
   -d '{"signal_id":"demo-1","source":"demo","action":"ping","entity":"system","event_time":"2026-01-01T00:00:00Z","payload":{"hello":"world"}}'
 ```
 
