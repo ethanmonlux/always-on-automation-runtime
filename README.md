@@ -6,18 +6,18 @@ Built as a reliability-focused execution layer for continuously running automati
 
 This demo shows the core reliability patterns used in a continuously running automation system:
 
-- Always-on webhook ingestion with authentication + validation  
-- Idempotent execution (duplicate events never re-run)  
-- Persistent state for deterministic behavior across restarts  
-- Guardrails + kill-switch for safe autonomous operation  
-- Modular connector layer for external API execution  
-- Operator visibility via health + status endpoints  
+- Always-on webhook ingestion with authentication + validation
+- Idempotent execution (duplicate events never re-run)
+- Persistent state for deterministic behavior across restarts
+- Guardrails + kill-switch for safe autonomous operation
+- Modular connector layer for external API execution
+- Operator visibility via health + status endpoints
 
 Most automation demos focus on making something work once. This focuses on making it safe and predictable in always-on environments where external systems fail or retry.
 
 This repository is a **sanitized demonstration** of an automation runtime that ingests webhook events, enforces idempotency and guardrails, executes actions through modular connectors, and exposes operator controls.
 
-It is designed to be a reusable backbone for API-driven automation where the hard part is not “making it work once” — it is making it safe, deterministic, and operable.
+It is designed to be a reusable backbone for API-driven automation where the hard part is not "making it work once" - it is making it safe, deterministic, and operable.
 
 ---
 
@@ -52,10 +52,10 @@ See `docs/architecture.md` for the full overview.
 
 ## Endpoints (demo)
 
-- `GET /health` — liveness check  
-- `GET /admin/status` — system mode + processed count  
-- `POST /admin/kill_switch?enabled=true|false` — operator kill switch  
-- `POST /webhook` — ingest an event (idempotent + guardrails + execute)
+- `GET /health` - liveness check
+- `GET /admin/status` - system mode + processed count
+- `POST /admin/kill_switch?enabled=true|false` - operator kill switch
+- `POST /webhook` - ingest an event (idempotent + guardrails + execute)
 
 ---
 
@@ -94,11 +94,11 @@ uvicorn app.main:app --reload --port 8080
 ## Demo (proves behavior)
 
 These commands demonstrate:
-- service liveness  
-- execution  
-- idempotency (duplicate event is not re-executed)  
-- operator control (kill switch blocks execution)  
-- observable status  
+- service liveness
+- execution
+- idempotency (duplicate event is not re-executed)
+- operator control (kill switch blocks execution)
+- observable status
 
 ```bash
 # 0) Health check
@@ -131,20 +131,20 @@ curl http://127.0.0.1:8080/admin/status
 
 ## Key concepts demonstrated
 
-- **Idempotency:** duplicate webhook deliveries do not cause duplicate execution  
-- **Persistent state:** system behavior remains deterministic across restarts  
-- **Guardrails:** centralized policy checks before any external side-effects  
-- **Composable design:** connectors abstract external systems behind clean interfaces  
-- **Operator controls:** health/status + kill switch for safe intervention  
+- **Idempotency:** duplicate webhook deliveries do not cause duplicate execution
+- **Persistent state:** system behavior remains deterministic across restarts
+- **Guardrails:** centralized policy checks before any external side-effects
+- **Composable design:** connectors abstract external systems behind clean interfaces
+- **Operator controls:** health/status + kill switch for safe intervention
 
 ---
 
 ## What is intentionally omitted
 
 To keep this public and safe, this repo excludes:
-- real credentials or account identifiers  
-- proprietary business logic or strategies  
-- live integrations with external services  
+- real credentials or account identifiers
+- proprietary business logic or strategies
+- live integrations with external services
 
 The goal is to demonstrate execution-layer patterns used for reliable automation and agent-style systems.
 
