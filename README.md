@@ -15,35 +15,36 @@ This demo shows the core reliability patterns used in a continuously running aut
 
 Most automation demos focus on making something work once. This focuses on making it safe and predictable in always-on environments where external systems fail or retry.
 
-This repository is a **sanitized demonstration** of an automation runtime that ingests webhook events, enforces **idempotency** and **guardrails**, executes actions through **modular connectors**, and exposes **operator controls**.
+This repository is a **sanitized demonstration** of an automation runtime that ingests webhook events, enforces idempotency and guardrails, executes actions through modular connectors, and exposes operator controls.
 
-Itâs designed to be a reusable backbone for API-driven automation where the hard part isnât âmaking it work onceâ â itâs making it **safe, deterministic, and operable**.
+It is designed to be a reusable backbone for API-driven automation where the hard part is not “making it work once” — it is making it safe, deterministic, and operable.
 
 ---
 
 ## What this is
 
 A continuously running execution service designed for reliable autonomous workflows:
+
 - Ingests structured webhook events (`POST /webhook`)
 - Authenticates requests via an API key header
-- Enforces **idempotent processing** using persistent state
-- Applies **guardrails** (safe defaults / allowlist / payload sanity)
-- Executes actions via a **connector interface** (mocked in this demo)
+- Enforces idempotent processing using persistent state
+- Applies guardrails (safe defaults / allowlist / payload sanity)
+- Executes actions via a connector interface (mocked in this demo)
 - Exposes operator endpoints for health/status and safe intervention
 
-> Note: This repo is intentionally **sanitized**. It contains no proprietary strategy logic, real credentials, or production integrations.
+**Note:** This repo is intentionally sanitized. It contains no proprietary strategy logic, real credentials, or production integrations.
 
 ---
 
 ## Architecture (high level)
 
 Signal Source  
-â Webhook ingestion (FastAPI)  
-â Validation + auth + idempotency  
-â Persistent state (SQLite in demo)  
-â Guardrails engine  
-â Execution layer (pluggable connectors)  
-â State + operator tooling (`/admin/status`, kill switch)
+-> Webhook ingestion (FastAPI)  
+-> Validation + auth + idempotency  
+-> Persistent state (SQLite in demo)  
+-> Guardrails engine  
+-> Execution layer (pluggable connectors)  
+-> State + operator tooling (`/admin/status`, kill switch)
 
 See `docs/architecture.md` for the full overview.
 
@@ -51,10 +52,10 @@ See `docs/architecture.md` for the full overview.
 
 ## Endpoints (demo)
 
-- `GET /health` â liveness check  
-- `GET /admin/status` â system mode + processed count  
-- `POST /admin/kill_switch?enabled=true|false` â operator kill switch  
-- `POST /webhook` â ingest an event (idempotent + guardrails + execute)
+- `GET /health` — liveness check  
+- `GET /admin/status` — system mode + processed count  
+- `POST /admin/kill_switch?enabled=true|false` — operator kill switch  
+- `POST /webhook` — ingest an event (idempotent + guardrails + execute)
 
 ---
 
@@ -95,8 +96,8 @@ uvicorn app.main:app --reload --port 8080
 These commands demonstrate:
 - service liveness  
 - execution  
-- **idempotency** (duplicate event is not re-executed)  
-- **operator control** (kill switch blocks execution)  
+- idempotency (duplicate event is not re-executed)  
+- operator control (kill switch blocks execution)  
 - observable status  
 
 ```bash
@@ -138,14 +139,14 @@ curl http://127.0.0.1:8080/admin/status
 
 ---
 
-## Whatâs intentionally omitted
+## What is intentionally omitted
 
 To keep this public and safe, this repo excludes:
 - real credentials or account identifiers  
-- proprietary business logic / strategies  
+- proprietary business logic or strategies  
 - live integrations with external services  
 
-The goal is to demonstrate the **execution layer patterns** used for production automation/agent systems.
+The goal is to demonstrate execution-layer patterns used for reliable automation and agent-style systems.
 
 ---
 
