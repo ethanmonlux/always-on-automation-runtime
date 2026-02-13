@@ -1,6 +1,6 @@
 # Always-On Automation Runtime (Sanitized Demo)
 
-Reliability-first execution layer for always-on automation and autonomous workflows.
+Built as a reliability-focused execution layer for continuously running automation systems and AI-assisted workflows.
 
 ## What this demonstrates (10-second version)
 
@@ -13,11 +13,11 @@ This demo shows the core reliability patterns used in a continuously running aut
 - Modular connector layer for external API execution  
 - Operator visibility via health + status endpoints  
 
-Designed to operate continuously without supervision and remain predictable even when external systems fail or retry.
+Most automation demos focus on making something work once. This focuses on making it safe and predictable in **always-on environments** where external systems fail or retry.
 
-This repository is a **sanitized demonstration** of an automation runtime that ingests webhook events, enforces **idempotency** and **guardrails**, executes actions through **modular connectors**, and exposes **operator controls** so it can run continuously without babysitting.
+This repository is a **sanitized demonstration** of an automation runtime that ingests webhook events, enforces **idempotency** and **guardrails**, executes actions through **modular connectors**, and exposes **operator controls**.
 
-It’s designed to be a reusable backbone for API-driven automation (and AI-assisted systems) where the hard part isn’t “making it work once” — it’s making it **safe, deterministic, and operable** in production.
+It’s designed to be a reusable backbone for API-driven automation where the hard part isn’t “making it work once” — it’s making it **safe, deterministic, and operable**.
 
 ---
 
