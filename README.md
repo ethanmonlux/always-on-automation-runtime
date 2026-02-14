@@ -127,6 +127,12 @@ curl -X POST "http://127.0.0.1:8080/webhook" \
 curl http://127.0.0.1:8080/admin/status
 ```
 
+Note:
+This demo persists processed events in a local SQLite file (state.sqlite).
+If you want to re-run the sample with the same signal_id, either:
+- delete state.sqlite, or
+- change the signal_id in examples/sample_webhook.json
+
 ---
 
 ## Key concepts demonstrated
