@@ -39,27 +39,16 @@ A continuously running execution service designed for reliable autonomous workfl
 
 ---
 
+## Scaling to agents + retrieval (production pattern)
+
+Add three layers on top of this runtime:
+- **Retrieval:** ingest docs + records → chunk/embed → index in a vector store with access controls.
+- **Orchestration:** an agent router plans tasks and calls tools via the same connector interface.
+- **Safety:** validate inputs/outputs, rate-limit, require approvals for high-impact actions, and log everything.
+- **Ops:** maintain eval sets, monitor latency/cost/failures/escalations, and track outcome metrics.
+
+
 ## Architecture (high level)
-## Extending this to agents + RAG (production pattern)
-
-To turn this runtime into an internal AI sandbox:
-
-1) **Knowledge / RAG layer**
-   - Ingest product docs, CAD/BOM metadata, SOPs, ticket history, and quoting rules
-   - Chunk + embed into a vector store
-   - Add retrieval policies so each copilot/agent only sees approved data
-
-2) **Agent layer**
-   - Use an orchestration framework (framework-agnostic: LangGraph, OpenClaw, etc.)
-   - Route tasks to tools through the same connector interface (with guardrails)
-   - Gate high-impact actions behind approvals + audit logs
-
-3) **Evaluation + monitoring**
-   - Golden sets for retrieval + prompt regression
-   - Track latency/cost, failure rates, and “time saved” metrics
-
-
-
 Signal Source  
 -> Webhook ingestion (FastAPI)  
 -> Validation + auth + idempotency  
