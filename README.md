@@ -34,7 +34,7 @@ A continuously running execution service designed for reliable automated workflo
 
 ---
 
-## Scaling to agents + retrieval (production pattern)
+## Extending to agents + retrieval (common production pattern)
 
 Add three layers on top of this runtime:
 - **Retrieval:** ingest docs + records → chunk/embed → index in a vector store with access controls.
@@ -76,11 +76,21 @@ Signal Source
 bash run_local.sh
 ```
 
+This script:
+- creates a virtualenv in `.venv` (if missing)
+- activates it
+- installs dependencies
+- sets `API_KEY` (defaults to `demo-key`)
+- runs the server via `uvicorn` on port `8080`
+
+> Tip: To override the API key, run `API_KEY="your-key" bash run_local.sh`
+
 ### Manual setup (Windows PowerShell)
 
 ```powershell
-py -m venv .venv
+python -m venv .venv  # or: py -m venv .venv
 .\.venv\Scripts\Activate.ps1
+pip install --upgrade pip
 pip install -r requirements.txt
 
 $env:API_KEY="demo-key"
@@ -99,9 +109,8 @@ These commands demonstrate:
 - operator control (kill switch blocks execution)
 - observable status
 
-**Note:** Run these commands in a **separate terminal** from the one running the server (e.g., keep `uvicorn` or `bash` in Terminal A, run the commands below in Terminal B).  
-If you stop the server with `Ctrl+C`, start it again before continuing.
-
+> **Note:** Run these commands in a **separate terminal** from the one running the server (e.g., keep `uvicorn`/`run_local.sh` in Terminal A, run the commands below in Terminal B).  
+> If you stop the server with `Ctrl+C`, start it again before continuing.
 
 ## Smoke test (Mac/Linux)
 
@@ -110,32 +119,23 @@ If you stop the server with `Ctrl+C`, start it again before continuing.
 curl http://127.0.0.1:8080/health
 
 # 1) Execute once
-curl -X POST "http://127.0.0.1:8080/webhook" \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: demo-key" \
-  --data-binary "@examples/sample_webhook.json"
+curl -X POST "http://127.0.0.1:8080/webhook"   -H "Content-Type: application/json"   -H "X-API-Key: demo-key"   --data-binary "@examples/sample_webhook.json"
 
 # 2) Prove idempotency (send same event again -> duplicate)
-curl -X POST "http://127.0.0.1:8080/webhook" \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: demo-key" \
-  --data-binary "@examples/sample_webhook.json"
+curl -X POST "http://127.0.0.1:8080/webhook"   -H "Content-Type: application/json"   -H "X-API-Key: demo-key"   --data-binary "@examples/sample_webhook.json"
 
 # 3) Prove persistent state across restarts
 #    - Stop the server (Ctrl+C)
 #    - Start it again using the same method you used above
 #    - Re-send the same payload -> it should still be treated as a duplicate
-curl -X POST "http://127.0.0.1:8080/webhook" \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: demo-key" \
-  --data-binary "@examples/sample_webhook.json"
+curl -X POST "http://127.0.0.1:8080/webhook"   -H "Content-Type: application/json"   -H "X-API-Key: demo-key"   --data-binary "@examples/sample_webhook.json"
 
 # 4) Prove operator control (kill switch -> reject)
 curl -X POST "http://127.0.0.1:8080/admin/kill_switch?enabled=true"
-curl -X POST "http://127.0.0.1:8080/webhook" \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: demo-key" \
-  --data-binary "@examples/sample_webhook.json"
+curl -X POST "http://127.0.0.1:8080/webhook"   -H "Content-Type: application/json"   -H "X-API-Key: demo-key"   --data-binary "@examples/sample_webhook.json"
+
+# 4b) Re-enable (optional)
+curl -X POST "http://127.0.0.1:8080/admin/kill_switch?enabled=false"
 
 # 5) Status (mode + processed count)
 curl http://127.0.0.1:8080/admin/status
@@ -177,12 +177,14 @@ curl.exe -X POST "http://127.0.0.1:8080/webhook" `
   -H "X-API-Key: demo-key" `
   --data-binary "@examples/sample_webhook.json"
 
+# 4b) Re-enable (optional)
+curl.exe -X POST "http://127.0.0.1:8080/admin/kill_switch?enabled=false"
+
 # 5) Status (mode + processed count)
 curl.exe http://127.0.0.1:8080/admin/status
 ```
 
-Note:
-This demo persists processed events in a local SQLite file (`state.sqlite`).
+**Note:** This demo persists processed events in a local SQLite file (`state.sqlite`) in the repo root.  
 If you want to re-run the sample with the same `signal_id`, either:
 - delete `state.sqlite`, or
 - change the `signal_id` in `examples/sample_webhook.json`
