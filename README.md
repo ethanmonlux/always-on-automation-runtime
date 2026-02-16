@@ -119,20 +119,32 @@ These commands demonstrate:
 curl http://127.0.0.1:8080/health
 
 # 1) Execute once
-curl -X POST "http://127.0.0.1:8080/webhook"   -H "Content-Type: application/json"   -H "X-API-Key: demo-key"   --data-binary "@examples/sample_webhook.json"
+curl -X POST "http://127.0.0.1:8080/webhook" `
+  -H "Content-Type: application/json" `
+  -H "X-API-Key: demo-key" `
+  --data-binary "@examples/sample_webhook.json"
 
 # 2) Prove idempotency (send same event again -> duplicate)
-curl -X POST "http://127.0.0.1:8080/webhook"   -H "Content-Type: application/json"   -H "X-API-Key: demo-key"   --data-binary "@examples/sample_webhook.json"
+curl -X POST "http://127.0.0.1:8080/webhook" `
+  -H "Content-Type: application/json" `
+  -H "X-API-Key: demo-key" `
+  --data-binary "@examples/sample_webhook.json"
 
 # 3) Prove persistent state across restarts
 #    - Stop the server (Ctrl+C)
 #    - Start it again using the same method you used above
 #    - Re-send the same payload -> it should still be treated as a duplicate
-curl -X POST "http://127.0.0.1:8080/webhook"   -H "Content-Type: application/json"   -H "X-API-Key: demo-key"   --data-binary "@examples/sample_webhook.json"
+curl -X POST "http://127.0.0.1:8080/webhook" `
+  -H "Content-Type: application/json" `
+  -H "X-API-Key: demo-key" `
+  --data-binary "@examples/sample_webhook.json"
 
 # 4) Prove operator control (kill switch -> reject)
 curl -X POST "http://127.0.0.1:8080/admin/kill_switch?enabled=true"
-curl -X POST "http://127.0.0.1:8080/webhook"   -H "Content-Type: application/json"   -H "X-API-Key: demo-key"   --data-binary "@examples/sample_webhook.json"
+curl -X POST "http://127.0.0.1:8080/webhook" `
+  -H "Content-Type: application/json" `
+  -H "X-API-Key: demo-key" `
+  --data-binary "@examples/sample_webhook.json"
 
 # 4b) Re-enable (optional)
 curl -X POST "http://127.0.0.1:8080/admin/kill_switch?enabled=false"
