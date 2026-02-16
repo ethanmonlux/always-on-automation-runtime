@@ -37,6 +37,19 @@ A continuously running execution service designed for reliable autonomous workfl
 ---
 
 ## Architecture (high level)
+## Extending this to agents + RAG (production pattern)
+To turn this runtime into an internal AI sandbox:
+1) **Knowledge / RAG layer**
+   - Ingest product docs, CAD/BOM metadata, SOPs, ticket history, and quoting rules
+   - Chunk + embed into a vector store
+   - Add retrieval policies so each copilot/agent only sees approved data
+2) **Agent layer**
+   - Use an orchestration framework (framework-agnostic: LangGraph, OpenClaw, etc.)
+   - Route tasks to tools through the same connector interface (with guardrails)
+   - Gate high-impact actions behind approvals + audit logs
+3) **Evaluation + monitoring**
+   - Golden sets for retrieval + prompt regression
+   - Track latency/cost, failure rates, and “time saved” metrics
 
 Signal Source  
 -> Webhook ingestion (FastAPI)  
@@ -155,6 +168,12 @@ To keep this public and safe, this repo excludes:
 The goal is to demonstrate execution-layer patterns used for reliable automation and agent-style systems.
 
 ---
+
+## TL;DR for hiring managers
+This is not a chatbot demo. It is a **reliable execution layer** for always-on automations and agent-style systems:
+- Webhooks -> validation/auth -> idempotency -> persistent state -> guardrails -> connector execution
+- Operator controls (status/health/kill switch) for safe production operation
+- Designed to be extended with RAG + agent orchestration for real internal copilots
 
 ## License
 MIT
