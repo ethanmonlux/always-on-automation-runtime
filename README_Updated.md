@@ -171,14 +171,13 @@ The goal is to demonstrate execution-layer patterns used for reliable automation
 
 ---
 
-
 ## TL;DR for hiring managers
 
-This is not a chatbot demo. It is a **reliable execution layer** for always-on automations and agent-style systems:
+This is not a chatbot demo. It’s a reliable execution layer for always-on automations and agent-style systems:
 
-- Webhooks -> validation/auth -> idempotency -> persistent state -> guardrails -> connector execution
-- Operator controls (status/health/kill switch) for safe production operation
-- Designed to be extended with RAG + agent orchestration for real internal copilots
+- **Events/webhooks → validation/auth → idempotency → persistent state → guardrails → modular connector execution**
+- **Operator controls** (status/health/kill switch) for safe production operation
+- Designed to extend into **retrieval (RAG)** and **agent orchestration** to power real internal copilots
 
 ## License
 MIT
