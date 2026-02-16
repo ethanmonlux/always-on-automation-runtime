@@ -21,7 +21,7 @@ This repository is a **sanitized demonstration** of an automation runtime that i
 
 ## What this is
 
-A continuously running execution service designed for reliable autonomous workflows:
+A continuously running execution service designed for reliable automated workflows:
 
 - Ingests structured webhook events (`POST /webhook`)
 - Authenticates requests via an API key header
@@ -78,17 +78,6 @@ See `docs/architecture.md` for the full overview.
 bash run_local.sh
 ```
 
-### Manual setup (Mac/Linux)
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
-export API_KEY="demo-key"
-uvicorn app.main:app --reload --port 8080
-```
-
 ### Manual setup (Windows PowerShell)
 
 ```powershell
@@ -108,6 +97,7 @@ These commands demonstrate:
 - service liveness
 - execution
 - idempotency (duplicate event is not re-executed)
+- persistent state across restarts
 - operator control (kill switch blocks execution)
 - observable status
 
@@ -127,22 +117,33 @@ curl -X POST "http://127.0.0.1:8080/webhook" \
   -H "X-API-Key: demo-key" \
   -d @examples/sample_webhook.json
 
-# 3) Prove operator control (kill switch -> reject)
+# 3) Prove persistent state across restarts
+#    - Stop the server (Ctrl+C)
+#    - Start it again using the same method you used above
+#        Mac/Linux: bash run_local.sh
+#        Windows:   rerun the uvicorn command from the Windows setup section
+#    - Re-send the same payload -> it should still be treated as a duplicate
+curl -X POST "http://127.0.0.1:8080/webhook" \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: demo-key" \
+  -d @examples/sample_webhook.json
+
+# 4) Prove operator control (kill switch -> reject)
 curl -X POST "http://127.0.0.1:8080/admin/kill_switch?enabled=true"
 curl -X POST "http://127.0.0.1:8080/webhook" \
   -H "Content-Type: application/json" \
   -H "X-API-Key: demo-key" \
   -d @examples/sample_webhook.json
 
-# 4) Status (mode + processed count)
+# 5) Status (mode + processed count)
 curl http://127.0.0.1:8080/admin/status
 ```
 
 Note:
-This demo persists processed events in a local SQLite file (state.sqlite).
-If you want to re-run the sample with the same signal_id, either:
-- delete state.sqlite, or
-- change the signal_id in examples/sample_webhook.json
+This demo persists processed events in a local SQLite file (`state.sqlite`).
+If you want to re-run the sample with the same `signal_id`, either:
+- delete `state.sqlite`, or
+- change the `signal_id` in `examples/sample_webhook.json`
 
 ---
 
