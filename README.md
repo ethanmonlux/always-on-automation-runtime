@@ -99,6 +99,12 @@ These commands demonstrate:
 - operator control (kill switch blocks execution)
 - observable status
 
+**Note:** Run these commands in a **separate terminal** from the one running the server (e.g., keep `uvicorn` or `bash` in Terminal A, run the commands below in Terminal B).  
+If you stop the server with `Ctrl+C`, start it again before continuing.
+
+
+## Smoke test (Mac/Linux)
+
 ```bash
 # 0) Health check
 curl http://127.0.0.1:8080/health
@@ -107,34 +113,72 @@ curl http://127.0.0.1:8080/health
 curl -X POST "http://127.0.0.1:8080/webhook" \
   -H "Content-Type: application/json" \
   -H "X-API-Key: demo-key" \
-  -d @examples/sample_webhook.json
+  --data-binary "@examples/sample_webhook.json"
 
 # 2) Prove idempotency (send same event again -> duplicate)
 curl -X POST "http://127.0.0.1:8080/webhook" \
   -H "Content-Type: application/json" \
   -H "X-API-Key: demo-key" \
-  -d @examples/sample_webhook.json
+  --data-binary "@examples/sample_webhook.json"
 
 # 3) Prove persistent state across restarts
 #    - Stop the server (Ctrl+C)
 #    - Start it again using the same method you used above
-#        Mac/Linux: bash run_local.sh
-#        Windows:   rerun the uvicorn command from the Windows setup section
 #    - Re-send the same payload -> it should still be treated as a duplicate
 curl -X POST "http://127.0.0.1:8080/webhook" \
   -H "Content-Type: application/json" \
   -H "X-API-Key: demo-key" \
-  -d @examples/sample_webhook.json
+  --data-binary "@examples/sample_webhook.json"
 
 # 4) Prove operator control (kill switch -> reject)
 curl -X POST "http://127.0.0.1:8080/admin/kill_switch?enabled=true"
 curl -X POST "http://127.0.0.1:8080/webhook" \
   -H "Content-Type: application/json" \
   -H "X-API-Key: demo-key" \
-  -d @examples/sample_webhook.json
+  --data-binary "@examples/sample_webhook.json"
 
 # 5) Status (mode + processed count)
 curl http://127.0.0.1:8080/admin/status
+```
+
+## Smoke test (Windows PowerShell)
+
+> **Note:** In PowerShell, `curl` is an alias for `Invoke-WebRequest`. Use `curl.exe` for real curl behavior.
+
+```powershell
+# 0) Health check
+curl.exe http://127.0.0.1:8080/health
+
+# 1) Execute once
+curl.exe -X POST "http://127.0.0.1:8080/webhook" `
+  -H "Content-Type: application/json" `
+  -H "X-API-Key: demo-key" `
+  --data-binary "@examples/sample_webhook.json"
+
+# 2) Prove idempotency (send same event again -> duplicate)
+curl.exe -X POST "http://127.0.0.1:8080/webhook" `
+  -H "Content-Type: application/json" `
+  -H "X-API-Key: demo-key" `
+  --data-binary "@examples/sample_webhook.json"
+
+# 3) Prove persistent state across restarts
+#    - Stop the server (Ctrl+C)
+#    - Start it again using the same method you used above
+#    - Re-send the same payload -> it should still be treated as a duplicate
+curl.exe -X POST "http://127.0.0.1:8080/webhook" `
+  -H "Content-Type: application/json" `
+  -H "X-API-Key: demo-key" `
+  --data-binary "@examples/sample_webhook.json"
+
+# 4) Prove operator control (kill switch -> reject)
+curl.exe -X POST "http://127.0.0.1:8080/admin/kill_switch?enabled=true"
+curl.exe -X POST "http://127.0.0.1:8080/webhook" `
+  -H "Content-Type: application/json" `
+  -H "X-API-Key: demo-key" `
+  --data-binary "@examples/sample_webhook.json"
+
+# 5) Status (mode + processed count)
+curl.exe http://127.0.0.1:8080/admin/status
 ```
 
 Note:
