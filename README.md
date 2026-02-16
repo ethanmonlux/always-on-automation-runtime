@@ -173,7 +173,7 @@ This is not a chatbot demo. It’s a reliable execution layer for always-on auto
 
 - **Events/webhooks → validation/auth → idempotency → persistent state → guardrails → modular connector execution**
 - **Operator controls** (status/health/kill switch) for safe production operation
-- Designed to extend into **retrieval (RAG)** and **agent orchestration** to power real internal copilots
+- Designed to integrate with retrieval (RAG) and agent orchestration layers for internal copilots.
 
 ## License
 
