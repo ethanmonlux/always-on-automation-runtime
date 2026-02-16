@@ -54,8 +54,6 @@ Signal Source
 -> Execution layer (pluggable connectors)  
 -> State + operator tooling (`/admin/status`, kill switch)
 
-See `docs/architecture.md` for the full overview.
-
 ---
 
 ## Endpoints (demo)
