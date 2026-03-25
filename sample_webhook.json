@@ -1,0 +1,11 @@
+{
+  "signal_id": "demo-001",
+  "source": "external_system",
+  "action": "create_task",
+  "entity": "lead",
+  "payload": {
+    "name": "Acme Corp",
+    "priority": "high"
+  },
+  "event_time": "2026-02-13T00:00:00Z"
+}
